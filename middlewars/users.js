@@ -2,7 +2,7 @@
 const users = require("../models/user");
 
 const findAllUsers = async (req, res, next) =>{
-    req.usersArray = await user.find({});
+    req.usersArray = await users.find({});
     next();
 }
 
@@ -26,5 +26,22 @@ const createUser = async(req, res, next) =>{
     }
   }
 
+  const updateUser = async(req, res, next) =>{
+  
+    try{
+      req.user = await users.findByIdAndUpdate(req.params.id, req.body);
+      next()
+    } catch (err) {
+      res.status(400).send({message: 'error updating user'})
+    }
+  }
 
-module.exports = {findAllUsers, findUserById, createUser};
+  const checkEmptyNameAndEmail = async (req,res,next)=>{
+    if(!req.body.username || !req.body.email){
+        res.status(400).send({message: 'Введите имя и емаил'})
+    }else{
+        next()
+    }
+  }
+
+module.exports = {findAllUsers, findUserById, createUser, updateUser, checkEmptyNameAndEmail};

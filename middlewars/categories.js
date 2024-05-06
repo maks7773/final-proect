@@ -1,7 +1,7 @@
 const categories = require("../models/category")
 
 const findAllCategories = async (req, res, next) =>{
-    req.categoriesArray = await category.find({});
+    req.categoriesArray = await categories.find({});
     next();
 }
 
@@ -25,4 +25,22 @@ const createCategory = async(req, res, next) =>{
     }
   }
 
-module.exports = {findAllCategories, findCategoryById, createCategory};
+  const updateCategory = async(req, res, next) =>{
+  
+    try{
+      req.category = await categories.findByIdAndUpdate(req.params.id, req.body);
+      next()
+    } catch (err) {
+      res.status(400).send({message: 'error updating category'})
+    }
+  }
+
+  const checkEmptyName = async (req,res,next)=>{
+    if(!req.body.name){
+        res.status(400).send({message: 'Ведите название категории'})
+    }else{
+        next()
+    }
+  }
+
+module.exports = {findAllCategories, findCategoryById, createCategory, updateCategory, checkEmptyName};

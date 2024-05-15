@@ -13,4 +13,10 @@ const sendCategoryUpdated = (req, res)=>{
     res.end(JSON.stringify({message: 'категоря обновлена'}))
 }
 
-module.exports = {sendAllCategories,sendCategoryCreated, sendCategoryUpdated};
+const sendCategoryDeleted = (req, res)=>{
+    res.setHeader('Content-type', 'application/json')
+    res.end(JSON.stringify(req.category))
+}
+
+
+module.exports = {sendAllCategories,sendCategoryCreated, sendCategoryUpdated,sendCategoryDeleted};

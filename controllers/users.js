@@ -13,5 +13,10 @@ const sendUserUpdated= (req, res)=>{
     res.end(JSON.stringify({message: 'пользователь обновлен'}))
 }
 
+const sendUserDeleted= (req, res)=>{
+    res.setHeader('Content-type', 'application/json')
+    res.end(JSON.stringify(req.users))
+}
 
-module.exports = {sendAllUsers, sendUserCreated, sendUserUpdated};
+
+module.exports = {sendAllUsers, sendUserCreated, sendUserUpdated, sendUserDeleted};

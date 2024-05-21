@@ -48,6 +48,56 @@ const deleteUser = async (req, res, next) => {
     res.status(400).send({ message: "error deleting user" });
   }
 };
+const checkIsUserExists = async (req, res, next) => {
+  const isInArray = req.usersArray.find((user) => {
+    return req.body.email === user.email;
+  });
+  if (isInArray) {
+    res.setHeader("Content-Type", "application/json");
+        res.status(400).send(JSON.stringify({ message: "Пользователь с таким email уже существует" }));
+  } else {
+    next();
+  }
+};
+
+const checkIfUsersAreSafe = async (req, res, next) => {
+  if (!req.body.users) {
+    next();
+    return;
+  }
+  if (req.body.users.length - 1 === req.game.users.length) {
+    next();
+    return;
+  } else {
+    res.setHeader("Content-Type", "application/json");
+        res.status(400).send(JSON.stringify({ message: "Нельзя удалять пользователей или добавлять больше одного пользователя" }));
+  }
+};
+
+const checkEmptyNameAndEmailAndPassword = async (req, res, next) => {
+  if (!req.body.username || !req.body.email || !req.body.password) {
+    res.setHeader("Content-Type", "application/json");
+        res.status(400).send(JSON.stringify({ message: "Введите имя, email и пароль" }));
+  } else {
+    next();
+  }
+};
+
+// middlewares/users.js
+
+const hashPassword = async (req, res, next) => {
+  try {
+    // Создаём случайную строку длиной в десять символов
+    const salt = await bcrypt.genSalt(10);
+    // Хешируем пароль
+    const hash = await bcrypt.hash(req.body.password, salt);
+    // Полученный в запросе пароль подменяем на хеш
+    req.body.password = hash;
+    next();
+  } catch (error) {
+    res.status(400).send({ message: "Ошибка хеширования пароля" });
+  }
+};
 
 module.exports = {
   findAllUsers,
@@ -56,4 +106,8 @@ module.exports = {
   updateUser,
   checkEmptyNameAndEmail,
   deleteUser,
+  checkIsUserExists,
+  checkIfUsersAreSafe,
+  checkEmptyNameAndEmailAndPassword,
+  hashPassword
 };

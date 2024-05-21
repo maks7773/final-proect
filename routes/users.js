@@ -3,6 +3,7 @@ const {
   sendAllUsers,
   sendUserUpdated,
   sendUserDeleted,
+  sendMe,
 } = require("../controllers/users");
 const { checkAuth } = require("../middlewars/auth");
 const {
@@ -19,7 +20,7 @@ const {
 const usersRouter = require("express").Router();
 
 usersRouter.get("/users", findAllUsers, sendAllUsers);
-
+usersRouter.get("/me", checkAuth, sendMe);
 
 usersRouter.post(
   "/users",

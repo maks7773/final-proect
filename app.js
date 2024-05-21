@@ -6,12 +6,16 @@ const connectToDatabase = require('./database/connect');
 const apiRouter = require('./routes/api');
 const PORT = 3000;
 const app = express();
+const cookieParser = require("cookie-parser");
+const pagesRouter = require('./routes/pages');
 connectToDatabase();
-// Теперь клиент имеет доступ только к публичным файлам
+
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 app.use(
+  cookieParser(),
 bodyParser.json(),
+pagesRouter,
 apiRouter
 ); 
 

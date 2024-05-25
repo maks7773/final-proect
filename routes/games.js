@@ -1,4 +1,4 @@
-const { findAllGames, createGame, findGameById, updateGame, deleteGame, checkIsGameExists, checkEmptyFields } = require('../middlewars/games');
+const { findAllGames, createGame, findGameById, updateGame, deleteGame, checkIsGameExists, checkEmptyFields, checkIsVoteRequest } = require('../middlewars/games');
  
  const {sendAllGames, sendGameCreated, sendGameUpdated, sendGameDeleted} = require('../controllers/games');
 const { checkIfCategoriesAvaliable } = require('../middlewars/categories.js');
@@ -24,6 +24,7 @@ sendGameCreated
 gamesRouter.put(
 '/games/:id', 
 findGameById,
+checkIsVoteRequest,
 checkIfUsersAreSafe,
 checkIfCategoriesAvaliable,
 checkEmptyFields,

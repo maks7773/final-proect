@@ -1,5 +1,5 @@
 const allowedCors = [
-    'https://pindiedomen.nomoredomainswork.ru'
+    'https://pindiefrontend.nomorepartiesco.ru'
   ];
 
 

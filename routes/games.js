@@ -7,7 +7,7 @@ const { checkAuth } = require('../middlewars/auth.js');
 const gamesRouter = require('express').Router()
 
 gamesRouter.get('/games', findAllGames, sendAllGames);
-
+gamesRouter.get('/games/:id', findGameById, sendAllGames)
 
 gamesRouter.post(
     '/games',  
